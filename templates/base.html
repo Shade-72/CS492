@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}School Management System{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="page">
+{% block body %}
+    <main class="container">
+        <nav>
+            <a href="{% url 'accounts:dashboard' %}">Home</a>
+            {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'accounts:logout' %}" class="inline">
+                {% csrf_token %}
+                <button type="submit" class="link">Log out</button>
+            </form>
+            {% endif %}
+        </nav>
+        {% block content %}{% endblock %}
+    </main>
+{% endblock %}
+</body>
+</html>

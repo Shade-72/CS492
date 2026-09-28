@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Enter grade{% endblock %}
+{% block content %}
+<h1>Enter a grade</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
+
+<h3>Recent entries</h3>
+<table>
+    <thead><tr><th>Student</th><th>Section</th><th>Assessment</th><th>Score</th></tr></thead>
+    <tbody>
+    {% for g in recent %}
+        <tr><td>{{ g.student.name }}</td><td>{{ g.section }}</td><td>{{ g.assessment }}</td>
+            <td>{{ g.score }} / {{ g.max_score }}</td></tr>
+    {% empty %}
+        <tr><td colspan="4" class="muted">No grades recorded yet.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

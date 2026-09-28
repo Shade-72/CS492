@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Grades{% endblock %}
+{% block content %}
+<h1>{{ student.name }}'s grades</h1>
+<table>
+    <thead><tr><th>Course</th><th>Assessment</th><th>Score</th></tr></thead>
+    <tbody>
+    {% for g in grades %}
+        <tr><td>{{ g.section.course.name }}</td><td>{{ g.assessment }}</td><td>{{ g.score }} / {{ g.max_score }}</td></tr>
+    {% empty %}
+        <tr><td colspan="3" class="muted">No grades yet.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

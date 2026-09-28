@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Sign in{% endblock %}
+{% block body %}
+<main class="login-card">
+    <h1>Sign in</h1>
+    <p class="subtitle">School Management System</p>
+
+    {% if error %}
+        <div class="alert" role="alert">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" autocomplete="off">
+        {% csrf_token %}
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required autofocus>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Log in</button>
+    </form>
+
+    <p class="hint">All traffic is encrypted (HTTPS in production) and monitored.</p>
+</main>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Announcements{% endblock %}
+{% block content %}
+<h1>Announcements</h1>
+{% if user.role == "admin" %}
+<p><a class="button" href="{% url 'notices:announcement_create' %}">New announcement</a></p>
+{% endif %}
+{% for a in announcements %}
+    <div class="bubble">
+        <h3>{{ a.title }}</h3>
+        <p>{{ a.message }}</p>
+        <p class="muted">{{ a.created_at|date:"Y-m-d H:i" }}{% if a.created_by %} &middot; {{ a.created_by.username }}{% endif %}</p>
+        {% if user.role == "admin" %}
+        <p>
+            <a href="{% url 'notices:announcement_edit' pk=a.pk %}">Edit</a> &middot;
+            <a href="{% url 'notices:announcement_delete' pk=a.pk %}">Delete</a>
+        </p>
+        {% endif %}
+    </div>
+{% empty %}
+    <p class="muted">No announcements yet.</p>
+{% endfor %}
+{% endblock %}

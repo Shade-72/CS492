@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}{{ student.name }}{% endblock %}
+{% block content %}
+<h1>{{ student.name }}</h1>
+<p class="muted">ID {{ student.student_id }} &middot; Grade {{ student.grade_level }}</p>
+<p>
+    <a href="{% url 'academics:student_grades' student_id=student.student_id %}">Grades</a> &middot;
+    <a href="{% url 'academics:report_card' student_id=student.student_id %}">Report card</a>
+</p>
+{% endblock %}

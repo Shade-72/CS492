@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Schedule a class{% endblock %}
+{% block content %}
+<h1>Schedule a class</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+</form>
+
+<h3>Existing sections</h3>
+<table>
+    <thead><tr><th>Course</th><th>Teacher</th><th>Room</th><th>Day</th><th>Time</th><th></th></tr></thead>
+    <tbody>
+    {% for s in sections %}
+        <tr>
+            <td>{{ s.course.name }}</td><td>{{ s.teacher.username }}</td><td>{{ s.room }}</td>
+            <td>{{ s.get_day_of_week_display }}</td><td>{{ s.start_time }}&ndash;{{ s.end_time }}</td>
+            <td><a href="{% url 'academics:enroll_in_section' section_id=s.pk %}">Add student</a></td>
+        </tr>
+    {% empty %}
+        <tr><td colspan="6" class="muted">No sections scheduled yet.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

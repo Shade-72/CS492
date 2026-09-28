@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Conversation{% endblock %}
+{% block content %}
+<p><a href="{% url 'family_portal:inbox' %}">&larr; All conversations</a></p>
+<h1>{{ thread.subject }}</h1>
+{% for m in messages %}
+    <div class="bubble {% if m.sender == request.user %}mine{% endif %}">
+        <div class="muted">{{ m.sender.username }} &middot; {{ m.sent_at|date:"Y-m-d H:i" }} UTC</div>
+        {# Autoescaped by Django templates: message text can never inject HTML. #}
+        <p>{{ m.body }}</p>
+    </div>
+{% endfor %}
+<form method="POST">
+    {% csrf_token %}
+    <label for="id_body">Reply</label>
+    <textarea id="id_body" name="body" rows="4" maxlength="5000" required></textarea>
+    <button type="submit">Send reply</button>
+</form>
+{% endblock %}

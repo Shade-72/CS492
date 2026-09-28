@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}New message{% endblock %}
+{% block content %}
+<h1>New message</h1>
+{% if form.fields.recipient.choices %}
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Send</button>
+</form>
+{% else %}
+    <p class="muted">You have no assigned students with linked parents.</p>
+{% endif %}
+<p><a href="{% url 'family_portal:inbox' %}">&larr; Back to messages</a></p>
+{% endblock %}

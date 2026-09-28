@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Add student to class{% endblock %}
+{% block content %}
+<h1>Add a student to {{ section }}</h1>
+{% if error %}<div class="alert" role="alert">{{ error }}</div>{% endif %}
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add</button>
+</form>
+<p><a href="{% url 'academics:schedule_section' %}">&larr; Back to schedule</a></p>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Critical notifications{% endblock %}
+{% block content %}
+<h1>Critical notifications</h1>
+{% if user.role == "admin" %}
+<p><a class="button" href="{% url 'notices:critical_notification_create' %}">Send a critical alert</a></p>
+{% endif %}
+{% for n in notifications %}
+    <div class="bubble">
+        <p><span class="badge tardy">{{ n.get_channel_display }}</span> {{ n.message }}</p>
+        <p class="muted">{{ n.created_at|date:"Y-m-d H:i" }}{% if n.created_by %} &middot; {{ n.created_by.username }}{% endif %}</p>
+    </div>
+{% empty %}
+    <p class="muted">No critical notifications yet.</p>
+{% endfor %}
+{% endblock %}

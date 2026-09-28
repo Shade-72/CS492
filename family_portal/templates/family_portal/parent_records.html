@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}My children{% endblock %}
+{% block content %}
+<h1>My children</h1>
+<ul>
+    {% for child in children %}
+        <li><a href="{% url 'family_portal:child_records' student_id=child.student_id %}">{{ child.name }}</a>
+            <span class="muted">Grade {{ child.grade_level }}</span></li>
+    {% empty %}
+        <li class="muted">No children are linked to your account.</li>
+    {% endfor %}
+</ul>
+
+{% if record %}
+    <h2>{{ record.student.name }}</h2>
+    <h3>Grades</h3>
+    <table>
+        <thead><tr><th>Course</th><th>Assessment</th><th>Score</th></tr></thead>
+        <tbody>
+        {% for g in record.grades %}
+            <tr><td>{{ g.course }}</td><td>{{ g.assessment }}</td><td>{{ g.score }} / {{ g.max_score }}</td></tr>
+        {% empty %}
+            <tr><td colspan="3" class="muted">No grades yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <h3>Attendance</h3>
+    <table>
+        <thead><tr><th>Date</th><th>Course</th><th>Status</th></tr></thead>
+        <tbody>
+        {% for a in record.attendance %}
+            <tr><td>{{ a.date }}</td><td>{{ a.course }}</td><td><span class="badge {{ a.status }}">{{ a.status }}</span></td></tr>
+        {% empty %}
+            <tr><td colspan="3" class="muted">No attendance recorded.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+{% endblock %}

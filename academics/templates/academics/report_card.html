@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Report card{% endblock %}
+{% block content %}
+<h1>Report card: {{ card.student.name }}</h1>
+<p class="muted">Grade {{ card.student.grade_level }} &middot; ID {{ card.student.student_id }}</p>
+
+<h3>Grades</h3>
+<table>
+    <thead><tr><th>Course</th><th>Percent</th><th>Letter</th></tr></thead>
+    <tbody>
+    {% for c in card.courses %}
+        <tr><td>{{ c.course }}</td><td>{{ c.percent }}%</td><td>{{ c.letter }}</td></tr>
+    {% empty %}
+        <tr><td colspan="3" class="muted">No grades yet.</td></tr>
+    {% endfor %}
+    </tbody>
+    {% if card.overall_percent is not None %}
+    <tfoot><tr><th>Overall</th><th>{{ card.overall_percent }}%</th><th>{{ card.overall_letter }}</th></tr></tfoot>
+    {% endif %}
+</table>
+
+<h3>Attendance</h3>
+<table>
+    <tbody>
+        <tr><td>Present</td><td>{{ card.attendance.present }}</td></tr>
+        <tr><td>Tardy</td><td>{{ card.attendance.tardy }}</td></tr>
+        <tr><td>Absent</td><td>{{ card.attendance.absent }}</td></tr>
+        <tr><th>Attendance rate</th><th>{% if card.attendance.rate_percent is not None %}{{ card.attendance.rate_percent }}%{% else %}&mdash;{% endif %}</th></tr>
+    </tbody>
+</table>
+
+<p><a class="button" href="{% url 'academics:report_card_csv' student_id=card.student.student_id %}">Download CSV</a></p>
+{% endblock %}

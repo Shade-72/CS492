@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Messages{% endblock %}
+{% block content %}
+<h1>Messages</h1>
+{% if recipient_choices %}
+<p><a class="button" href="{% url 'family_portal:send_message' %}">New message</a></p>
+{% endif %}
+<h3>Conversations</h3>
+<ul>
+{% for t in threads %}
+    <li><a href="{% url 'family_portal:thread' thread_id=t.pk %}">{{ t.subject }}</a>
+        <span class="muted">re: {{ t.student.name }}</span></li>
+{% empty %}
+    <li class="muted">No conversations yet.</li>
+{% endfor %}
+</ul>
+{% endblock %}

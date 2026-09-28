@@ -1,0 +1,38 @@
+# Render "Blueprint" spec: https://render.com/docs/blueprint-spec
+#
+# Deploys this project with one click via Render's "New > Blueprint" flow
+# pointed at this repo, provisioning a free Postgres database and wiring
+# DATABASE_URL to the web service automatically. You can just as easily
+# skip this file and configure the same two settings (build command
+# `./build.sh`, start command below) by hand in the Render dashboard.
+services:
+  - type: web
+    name: school-management-django
+    runtime: python
+    plan: free
+    buildCommand: ./build.sh
+    startCommand: gunicorn config.wsgi:application
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      # Fernet keys have a specific format (32 url-safe base64 bytes) that
+      # Render's generic generateValue doesn't guarantee, so this one is
+      # `sync: false`: Render will prompt you to paste in a value when you
+      # create the Blueprint. Generate one with:
+      #   python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
+      - key: FIELD_ENCRYPTION_KEY
+        sync: false
+      - key: DEBUG
+        value: "false"
+      - key: FORCE_HTTPS
+        value: "true"
+      - key: PYTHON_VERSION
+        value: "3.12.3"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: school-management-db
+          property: connectionString
+
+databases:
+  - name: school-management-db
+    plan: free
